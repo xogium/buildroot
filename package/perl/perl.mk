@@ -90,6 +90,8 @@ endef
 
 define PERL_INSTALL_STAGING_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) DESTDIR="$(STAGING_DIR)" install.perl install.sym
+	$(SED) 's_/usr/lib/perl5_$(STAGING_DIR)/usr/lib/perl5_g' -i $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/Config.pm
+	$(SED) "s_^\(ccdlflags=.*\)._\1 -Wl,-rpath,/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/CORE'_g" -i $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/$(PERL_ARCHNAME)/Config_heavy.pl
 endef
 
 define PERL_INSTALL_TARGET_CMDS
